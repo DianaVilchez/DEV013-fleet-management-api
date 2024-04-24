@@ -2,6 +2,8 @@
   "dependencies": {
     "@prisma/client": "^5.12.1",
     "@vercel/postgres": "^0.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "4.19.2",
     "pg": "^8.11.5"
   },
@@ -19,9 +21,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "ts-node-dev src/index.ts",
-    "tsc": "tsc",
-    "start": "node build/index.js",
+    "dev": "ts-node-dev src/app.ts",
+    "build": "tsc",
+    "start": "node build/app.js",
     "test:e2e": "jest --verbose --testPathPattern e2e --globalSetup ./e2e/globalSetup --globalTeardown ./e2e/globalTeardown --runInBand",
     "test:unit": "jest --verbose --testPathIgnorePatterns e2e",
     "test": "npm run test:e2e && npm run test:unit"

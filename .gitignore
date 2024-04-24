@@ -1,3 +1,4 @@
 node_modules
 # Keep environment variables out of version control
 .env
+#para que ignore lo datos env que tiene datos sensibles 
