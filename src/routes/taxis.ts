@@ -6,6 +6,7 @@ const router = Router()
 const prisma = new PrismaClient()
 
 router.get('/taxis',async(req,res) => {
+    try{
  //implementacion de paginacion 
  // se tiene que especificar el tipo en req.query._page y req.query._limit
  const page = parseInt(req.query._page as string, 10) || 1; // Página actual
@@ -18,7 +19,10 @@ router.get('/taxis',async(req,res) => {
 
  const currentPageUsers = taxis.slice(startIndex, startIndex + limit);
       // Enviar resultados al cliente
-      res.status(200).json(currentPageUsers);
+      return res.status(200).json(currentPageUsers);
+      } catch (error){
+       return res.status(500).json(error) ;
+      }
 
 })
 
