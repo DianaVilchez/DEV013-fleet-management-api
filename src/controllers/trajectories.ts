@@ -22,6 +22,9 @@ const dateList = new Date(date as string)
 const starOfDay= new Date(Date.UTC(dateList.getUTCFullYear(), dateList.getUTCMonth(),dateList.getUTCDate()))
 const endOfDay = new Date(Date.UTC(dateList.getUTCFullYear(), dateList.getUTCMonth(),dateList.getUTCDate() + 1))
 
+const lastId = req.query.lastId ? parseInt(req.query.lastId as string) : 0;
+const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+
 const trajectoriesData = await prisma.trajectories.findMany({
       where: {
         taxi_id: Number(taxi_id), // Convertir a número si es necesario
@@ -30,7 +33,12 @@ const trajectoriesData = await prisma.trajectories.findMany({
             lt :endOfDay,
         } // Asegurarse de que la fecha sea válida
       },
-      
+        take: limit,
+        cursor: lastId ? { id: Number(lastId) } : undefined,
+        skip: lastId ? 1 : 0, // Omitir el registro actual del cursor para empezar después de este
+        orderBy: {
+            id: 'asc'
+          }
     });
     
     console.log(trajectoriesData)
