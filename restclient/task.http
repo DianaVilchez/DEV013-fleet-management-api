@@ -1,1 +1,12 @@
-GET http://localhost:3000/taxis
+
+//nos permite hacer las peticiones
+
+# GET http://localhost:3000/taxis?lastId=0&limit=20
+
+GET http://localhost:3000/trajectories?taxi_id=9275&date=2008-02-04&lastId=2593
+
+# GET http://localhost:3000/taxis
+# Content-Type: application/json
+# {
+    
+# }

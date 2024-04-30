@@ -3,7 +3,7 @@
 //establecer la rutas y configurar los middleware
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerJSDoc = require('swagger-jsdoc');
-// const swaggerDefinition = require('./routes/swagger');
+// const swaggerDefinition = require('./swagger');
 import 'dotenv/config'
 import express from 'express';
 const cors = require('cors');
@@ -30,14 +30,8 @@ app.use('/',routesTrajectories);
 
 // middlewares
 
+//iniciar el servidor 
 app.listen(PORT, () => {
     console.log(`Servidor conectado en el puerto ${PORT}`)
 });
-
-
-//iniciar el servidor 
-// const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => {
-//     console.log('Servidor conectado en el puerto 3000')
-// });
 
