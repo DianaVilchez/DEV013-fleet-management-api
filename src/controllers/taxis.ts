@@ -5,6 +5,7 @@ import { handleHttp } from '../utils/error';
 
 const prisma = new PrismaClient()
 // module.exports = {
+    
 const getDataTaxis = async(req:Request,res:Response) => {
     try{
         //implementacion de paginacion 
