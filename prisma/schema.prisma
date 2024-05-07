@@ -9,7 +9,7 @@ datasource db {
 
 model taxis {
   id           Int            @id
-  plate        String
+  plate        String         
   trajectories trajectories[]
 }
 
