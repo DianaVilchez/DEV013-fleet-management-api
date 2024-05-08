@@ -46,16 +46,42 @@ const router = Router()
  *                   items:
  *                     type: object
  *                     properties:
- *                       id:
+ *                       taxi_id:
  *                         type: integer
- *                       plate:
+ *                       date:
  *                         type: string
+ *                       latitude:
+ *                        type: string
+ *                       longitude:
+ *                        type: string
+ *                       id :
+ *                        type: string
  *                 nextCursor:
  *                   type: integer
  *                   description: The ID of the last taxi in the list, to be used as the 'lastId' parameter for fetching the next page.
  *                 limit:
  *                   type: integer
  *                   description: The number of items per page that was requested.
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Invalid input data
+ *       404:
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Resource not found
  *       500:
  *         description: Error
  *         content:
@@ -65,9 +91,8 @@ const router = Router()
  *               properties:
  *                 error:
  *                   type: string
- *                   example: string
+ *                   example: Unexpected server error
  */
-
 router.get('/trajectories'/*,middleware*/,getTrajectories)
 
 export default router

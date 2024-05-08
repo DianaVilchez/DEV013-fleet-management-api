@@ -1,9 +1,9 @@
 
 //nos permite hacer las peticiones
 
-GET http://localhost:3000/taxis
+# GET http://localhost:3000/taxis
 
-# GET http://localhost:3000/trajectories?taxi_id=8935&date=2008-02-04
+GET http://localhost:3000/trajectories?taxi_id=8935&date=2008-02-04
 
 
 # GET http://localhost:3000/taxis
