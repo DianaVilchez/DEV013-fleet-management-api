@@ -77,7 +77,7 @@ describe("/GET/taxis",() =>{
       expect(res.status).toBe(400);
       expect(res.body).toEqual({ message: "Dato no insertado" });
     });
-    it("Debería devolver error 400 si 'plate' está vacío", async () => {
+    it("Debería devolver error 404 si los datos son erroneos", async () => {
       const res = await request(app)
         .get("/taxis")
         .query({ plate: "FNHK-377"});

@@ -5,7 +5,7 @@ import { getDataTaxis } from "../controllers/taxis";
 // cada router que se exporta es diferente aun asi tenga el mismo nombre
 const router = Router()
 /**
- * @openapi
+ * @swagger
  * /taxis:
  *   get:
  *     tags:
@@ -16,20 +16,20 @@ const router = Router()
  *         schema:
  *           type: integer
  *         required: false
- *         description: The ID of the taxi to retrieve trajectories for.
+ *         description: The ID of the taxi to retrieve information for.
  *       - in: query
- *         name: date
+ *         name: plate
  *         schema:
  *           type: string
- *           format: date
+ *           format: string
  *         required: false
- *         description: The date for which to retrieve trajectories (YYYY-MM-DD).
+ *         description: The plate number of the taxi to retrieve information for.
  *       - in: query
  *         name: lastId
  *         schema:
  *           type: integer
  *         required: false
- *         description: The ID of the last trajectory received; used for pagination.
+ *         description: The last ID of the taxi list; used for pagination.
  *     responses:
  *       200:
  *         description: OK
@@ -45,26 +45,47 @@ const router = Router()
  *                   type: array
  *                   items:
  *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       plate:
+ *                         type: string
  *                 nextCursor:
  *                   type: integer
  *                   description: The ID of the last taxi in the list, to be used as the 'lastId' parameter for fetching the next page.
  *                 limit:
  *                   type: integer
  *                   description: The number of items per page that was requested.
- *       500:
- *         description: Error
+ *       400:
+ *         description: Bad Request
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status:
+ *                 error:
  *                   type: string
- *                   example: Error
- *                 data:
- *                   type: array
- *                   items:
- *                     type: object
+ *                   example: Invalid input data
+ *       404:
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Resource not found
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Unexpected server error
  */
 
 router.get('/taxis',/*middleware*/getDataTaxis)
