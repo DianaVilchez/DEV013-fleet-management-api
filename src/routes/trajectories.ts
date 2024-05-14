@@ -1,6 +1,9 @@
 // import express from 'express'
 import { Router } from "express";
 import { getTrajectories} from "../controllers/trajectories";
+import { getLastTrajectorie } from "../controllers/trajectories"
+import { getLastTrajectories } from "../controllers/trajectories"
+
 
 // cada router que se exporta es diferente aun asi tenga el mismo nombre
 const router = Router()
@@ -21,7 +24,7 @@ const router = Router()
  *         name: date
  *         schema:
  *           type: string
- *           format: string
+ *           format: date
  *         required: false
  *         description: The date for which to retrieve trajectories (YYYY-MM-DD).
  *       - in: query
@@ -51,11 +54,11 @@ const router = Router()
  *                       date:
  *                         type: string
  *                       latitude:
- *                        type: string
+ *                         type: string
  *                       longitude:
- *                        type: string
- *                       id :
- *                        type: string
+ *                         type: string
+ *                       id:
+ *                         type: string
  *                 nextCursor:
  *                   type: integer
  *                   description: The ID of the last taxi in the list, to be used as the 'lastId' parameter for fetching the next page.
@@ -93,6 +96,56 @@ const router = Router()
  *                   type: string
  *                   example: Unexpected server error
  */
+
+/**
+ * @swagger
+ * /lasttrajectorie:
+ *   get:
+ *     tags:
+ *       - Trajectorie/{taxi_id}
+ *     parameters:
+ *       - in: query
+ *         name: taxi_id
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: The ID of the taxi to retrieve trajectories for.
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       plate:
+ *                         type: string
+ *                       taxi_id:
+ *                         type: integer
+ *                       date:
+ *                         type: string
+ *                       latitude:
+ *                         type: string
+ *                       longitude:
+ *                         type: string
+ *                       id:
+ *                         type: string
+ *                 nextCursor:
+ *                   type: integer
+ *                   description: The ID of the last taxi in the list, to be used as the 'lastId' parameter for fetching the next page.
+ */
+
+router.get('/trajectories/latest',getLastTrajectories)
 router.get('/trajectories'/*,middleware*/,getTrajectories)
+
+router.get('/lasttrajectorie',getLastTrajectorie)
 
 export default router

@@ -11,6 +11,7 @@ import  { router }  from './routes';
 // se importan las rutas:
 import routesTaxis from './routes/taxis';
 import routesTrajectories from './routes/trajectories'
+
 const { swaggerDocs } = require ('./swagger')
 const cors = require('cors');
 const PORT = process.env.PORT || 3000;

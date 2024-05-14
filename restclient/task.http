@@ -3,7 +3,11 @@
 
 # GET http://localhost:3000/taxis
 
-GET http://localhost:3000/trajectories?taxi_id=8935&date=2008-02-04
+# GET http://localhost:3000/trajectories?taxi_id=8935&date=2008-02-04
+
+# GET http://localhost:3000/lasttrajectorie?taxi_id=10133
+
+GET http://localhost:3000/trajectories/latest
 
 
 # GET http://localhost:3000/taxis
