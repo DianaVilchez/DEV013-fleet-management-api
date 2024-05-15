@@ -172,7 +172,7 @@ const getTrajectories = async (req: Request, res: Response) => {
           .json({ message: "Error interno del servidor", error });
       }
     };
-const getLastTrajectorie = async (req: Request, res: Response) => {
+const getLastTrajectory = async (req: Request, res: Response) => {
   console.log("hola")
   const {taxi_id} = req.query;
   if (!taxi_id){
@@ -265,4 +265,4 @@ const getLastTrajectorie = async (req: Request, res: Response) => {
   // }
 
 
-export { getTrajectories, getLastTrajectories,getLastTrajectorie};
+export { getTrajectories, getLastTrajectories,getLastTrajectory};

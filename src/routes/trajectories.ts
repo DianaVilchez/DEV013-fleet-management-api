@@ -1,7 +1,7 @@
 // import express from 'express'
 import { Router } from "express";
 import { getTrajectories} from "../controllers/trajectories";
-import { getLastTrajectorie } from "../controllers/trajectories"
+import { getLastTrajectory } from "../controllers/trajectories"
 import { getLastTrajectories } from "../controllers/trajectories"
 
 
@@ -146,6 +146,6 @@ const router = Router()
 router.get('/trajectories/latest',getLastTrajectories)
 router.get('/trajectories'/*,middleware*/,getTrajectories)
 
-router.get('/lasttrajectorie',getLastTrajectorie)
+router.get('/lasttrajectorie',getLastTrajectory)
 
 export default router
