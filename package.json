@@ -38,7 +38,8 @@
     "start": "node build/app.js",
     "swagger": "node src/swagger.js",
     "test": "jest",
-  "coverage": "jest --coverage"  
+    "test:e2e": "jest --config jest.config.js --verbose"
+
   },
   "keywords": [],
   "author": "",
