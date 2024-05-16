@@ -1,5 +1,5 @@
-
-import { /*getDataTaxis,*/ getAllTaxis } from "../src/controllers/taxis";
+//logra conectarse a la base de datos pero lanza un error de 500 
+import { getDataTaxis} from "../src/controllers/taxis";
 import { Request, Response } from 'express';
 // import prisma from "../src/controllers/taxis"
 
@@ -18,41 +18,10 @@ jest.mock('@prisma/client', () => {
         }))
     };
 });
-    // return {
-    //     PrismaClient :jest.fn(() => mockFindMany)
-    // }
-    // __esModule: true,
-    // default: {
-    //     taxis: {
-    //         findMany: jest.fn(), // Configura el mock de findMany
-    //     }
-    // }
-
-
-// const findMany =  jest.fn().mockResolvedValue([
-//     { id:10133 , plate:"PAOF-6727"},
-//     { id:7249 , plate:"CNCJ-2997"},
-//     { id:2210 , plate:"FGMG-3071"},
-// ])
-// class prismaMock  {
-//     taxis = {
-//         findMany
-//     }
-// };
-// jest.mock('@prisma/client',() => ({
-//     PrismaClient : prismaMock
-// }))
 
 
 describe('getAllTaxis',() => {
     it('should return list of taxis' , async () => {
-        // const mockFindMany = jest.fn().mockResolvedValue([
-        //     { id: 10133, plate: "PAOF-6727" },
-        //     { id: 7249, plate: "CNCJ-2997" },
-        //     { id: 2210, plate: "FGMG-3071" },
-        // ]);
-
-// (prisma.taxis.findMany as jest.Mock).mockImplementation(mockFindMany);
         //creamos req y res simulados que aun no se usen las funcion los espera
         const req = {} as Request;
         const res = {
@@ -66,7 +35,7 @@ describe('getAllTaxis',() => {
         //     { id:2210 , plate:"FGMG-3071"},
         // ])
 
-        await getAllTaxis(req,res);
+        await getDataTaxis(req,res);
 
     // expect(mockFindMany.taxis.findMany).toHaveBeenCalledWith({
     //     select:{
@@ -82,7 +51,7 @@ describe('getAllTaxis',() => {
                 { id: 2210, plate: "FGMG-3071" },
             ],
             // nextCursor: 296,
-            limit: 10
+            // limit: 10
             
         });
     })

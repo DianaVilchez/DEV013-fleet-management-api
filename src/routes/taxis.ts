@@ -1,6 +1,6 @@
 // import express from 'express'
 import { Router } from "express";
-import { /*getDataTaxis,*/ getAllTaxis } from "../controllers/taxis";
+import { getDataTaxis,/* getAllTaxis*/ } from "../controllers/taxis";
 
 // cada router que se exporta es diferente aun asi tenga el mismo nombre
 const router = Router()
@@ -88,8 +88,8 @@ const router = Router()
  *                   example: Unexpected server error
  */
 
-// router.get('/taxis',/*middleware*/getDataTaxis)
+router.get('/taxis',/*middleware*/getDataTaxis)
 
-router.get('/taxis',/*middleware*/getAllTaxis)
+// router.get('/taxis',/*middleware*/getAllTaxis)
 
 export default router

@@ -128,8 +128,7 @@ const getTrajectories = async (req: Request, res: Response) => {
     return handleHttp(res, "Error en el servidor");
   }
 };
-
-    const getLastTrajectories = async (_: Request, res: Response) => {
+const getLastTrajectories = async (_: Request, res: Response) => {
       console.log("hola");
       try {
         const lastTrajectoriesDates = await prisma.trajectories.groupBy({
