@@ -28,11 +28,17 @@ const router = Router()
  *         required: false
  *         description: The date for which to retrieve trajectories (YYYY-MM-DD).
  *       - in: query
- *         name: lastId
+ *         name: page
  *         schema:
  *           type: integer
  *         required: false
- *         description: The ID of the last trajectory received; used for pagination.
+ *         description: The number of page; used for pagination.
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: The number of data; used for pagination.
  *     responses:
  *       200:
  *         description: OK

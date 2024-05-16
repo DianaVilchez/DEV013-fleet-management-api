@@ -56,7 +56,7 @@ const getTrajectories = async (req: Request, res: Response) => {
   }
 };
 
-    const getLastTrajectories = async (_: Request, res: Response) => {
+const getLastTrajectories = async (_: Request, res: Response) => {
       console.log("hola");
       try {
         const lastTrajectoriesDates = await prisma.trajectories.groupBy({

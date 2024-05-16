@@ -25,11 +25,17 @@ const router = Router()
  *         required: false
  *         description: The plate number of the taxi to retrieve information for.
  *       - in: query
- *         name: lastId
+ *         name: page
  *         schema:
  *           type: integer
  *         required: false
- *         description: The last ID of the taxi list; used for pagination.
+ *         description: The number of page; used for pagination.
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description:  The number of data; used for pagination.
  *     responses:
  *       200:
  *         description: OK
