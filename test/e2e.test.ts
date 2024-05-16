@@ -1,13 +1,7 @@
 import request from "supertest";
 // import { getTrajectories } from "../src/controllers/trajectories";
 const app = require('../src/app');//para que se pueda usar supertest se llama al archivo principal
-
-// describe('GET /trajectories', () => {
-//   it('It should return all the trajectories of the corresponding taxi_id.',() => (
-//     fetch('/trajectories').then((res) => expect(res.status).toBe(200))
-//   ))
-// })
-
+//-------------TAXIS----------------
 describe("/GET/taxis", () => {
   it("Deberia devolver el listado de taxis paginado con las propiedades page y limit", async () => {
     const res = await request(app).get("/taxis")
@@ -49,36 +43,58 @@ describe("/GET/taxis", () => {
     expect(res.body).toEqual({message:"Error en el servidor"});
   })
 
-  // it('debería manejar un error interno del servidor',async() => {
-  //       const res =await(app)
-  //       .get("/taxis");
-  //       // expect(res.status).toBe(500);
-  //       expect(res.body).toHaveProperty('message','Error en el servidor');
-  // });
 });
-
+//-------------TRAJECTORIES----------------
 describe("GET /trajectories",() =>{
   it("It should return all the trajectories of the corresponding taxi_id" ,async()=> {
     const res = await request(app)
        .get("/trajectories")
-       .query({taxi_id:10133});
+       .query({taxi_id:10133,page:1 , limit:10});
        expect(res.status).toBe(200);
        expect(res.body).toHaveProperty('data');
+       expect(res.body).toHaveProperty("page");
+       expect(res.body).toHaveProperty("limit");
   });
 
   it("It should return all the trajectories of the corresponding taxi_id" ,async()=> {
     const res = await request(app)
        .get("/trajectories")
-       .query({date:"2008-02-04"});
+       .query({date:"2008-02-04",page:1 , limit:10});
        expect(res.status).toBe(200);
        expect(res.body).toHaveProperty('data');
+       expect(res.body).toHaveProperty("page");
+       expect(res.body).toHaveProperty("limit");
   });
 
   it("It should return all the trajectories of the corresponding taxi_id" ,async()=> {
     const res = await request(app)
        .get("/trajectories")
-       .query({taxi_id:10133,date:"2008-02-04"});
-       expect(res.status).toBe(200);
-       expect(res.body).toHaveProperty('data');
+       .query({taxi_id:"",date:"",page:1 , limit:10});
+       expect(res.status).toBe(400);
+       expect(res.body).toEqual({ message: "Dato no insertado" });
+  });
+
+  it("It should return all the trajectories of the corresponding taxi_id" ,async()=> {
+    const res = await request(app)
+       .get("/trajectories")
+       .query({taxi_id:1013,page:1 , limit:10});
+       expect(res.status).toBe(404);
+       expect(res.body).toEqual({ message: "No se encontraron datos" });
+  });
+
+  it("It should return all the trajectories of the corresponding taxi_id" ,async()=> {
+    const res = await request(app)
+       .get("/trajectories")
+       .query({date:"2028-02-04",page:1 , limit:10});
+       expect(res.status).toBe(404);
+       expect(res.body).toEqual({ message: "No se encontraron datos" });
+  });
+
+  it("It should return all the trajectories of the corresponding taxi_id" ,async()=> {
+    const res = await request(app)
+       .get("/trajectories")
+       .query({date:"2028-02-04", limit:10});
+       expect(res.status).toBe(500);
+       expect(res.body).toEqual({ message: "Error en el servidor" });
   });
 });
