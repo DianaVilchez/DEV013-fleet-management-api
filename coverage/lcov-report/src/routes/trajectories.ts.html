@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -214,17 +214,41 @@
 <a name='L149'></a><a href='#L149'>149</a>
 <a name='L150'></a><a href='#L150'>150</a>
 <a name='L151'></a><a href='#L151'>151</a>
-<a name='L152'></a><a href='#L152'>152</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -362,15 +386,17 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// import express from 'express'
 import { Router } from "express";
 import { getTrajectories} from "../controllers/trajectories";
-import { getLastTrajectory } from "../controllers/trajectories"
-import { getLastTrajectories } from "../controllers/trajectories"
-&nbsp;
+import { getLastTrajectories } from "../controllers/trajectories";
+//adicionales
+import { getLastTrajectory , getAllTrajectories} from "../controllers/trajectories"
 &nbsp;
 // cada router que se exporta es diferente aun asi tenga el mismo nombre
 const router = Router()
@@ -395,11 +421,17 @@ const router = Router()
  *         required: false
  *         description: The date for which to retrieve trajectories (YYYY-MM-DD).
  *       - in: query
- *         name: lastId
+ *         name: page
  *         schema:
  *           type: integer
  *         required: false
- *         description: The ID of the last trajectory received; used for pagination.
+ *         description: The number of page; used for pagination.
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: The number of data; used for pagination.
  *     responses:
  *       200:
  *         description: OK
@@ -466,17 +498,23 @@ const router = Router()
 &nbsp;
 /**
  * @swagger
- * /lasttrajectorie:
+ * /trajectories/latest:
  *   get:
  *     tags:
  *       - Trajectorie/{taxi_id}
  *     parameters:
  *       - in: query
- *         name: taxi_id
+ *         name: page
  *         schema:
- *           type: string
+ *           type: integer
  *         required: false
- *         description: The ID of the taxi to retrieve trajectories for.
+ *         description: The number of page; used for pagination.
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description:  The number of data; used for pagination.
  *     responses:
  *       200:
  *         description: OK
@@ -509,11 +547,12 @@ const router = Router()
  *                   type: integer
  *                   description: The ID of the last taxi in the list, to be used as the 'lastId' parameter for fetching the next page.
  */
-&nbsp;
-router.get('/trajectories/latest',getLastTrajectories)
 router.get('/trajectories'/*,middleware*/,getTrajectories)
+router.get('/trajectories/latest',getLastTrajectories)
 &nbsp;
-router.get('/lasttrajectorie',getLastTrajectory)
+//rutas adicionales
+router.get('/alltrajectories',getAllTrajectories)
+router.get('/lasttrajectory',getLastTrajectory)
 &nbsp;
 export default router
 &nbsp;</pre></td></tr></table></pre>
@@ -523,7 +562,7 @@ export default router
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-16T14:47:07.055Z
+                at 2024-05-18T03:36:38.937Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -1,9 +1,9 @@
 // import express from 'express'
 import { Router } from "express";
 import { getTrajectories} from "../controllers/trajectories";
-import { getLastTrajectory } from "../controllers/trajectories"
-import { getLastTrajectories } from "../controllers/trajectories"
-
+import { getLastTrajectories, getFiltersTrajectories } from "../controllers/trajectories";
+//adicionales
+import { getLastTrajectory , getAllTrajectories} from "../controllers/trajectories"
 
 // cada router que se exporta es diferente aun asi tenga el mismo nombre
 const router = Router()
@@ -105,17 +105,23 @@ const router = Router()
 
 /**
  * @swagger
- * /lasttrajectorie:
+ * /trajectories/latest:
  *   get:
  *     tags:
  *       - Trajectorie/{taxi_id}
  *     parameters:
  *       - in: query
- *         name: taxi_id
+ *         name: page
  *         schema:
- *           type: string
+ *           type: integer
  *         required: false
- *         description: The ID of the taxi to retrieve trajectories for.
+ *         description: The number of page; used for pagination.
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description:  The number of data; used for pagination.
  *     responses:
  *       200:
  *         description: OK
@@ -148,10 +154,13 @@ const router = Router()
  *                   type: integer
  *                   description: The ID of the last taxi in the list, to be used as the 'lastId' parameter for fetching the next page.
  */
-
-router.get('/trajectories/latest',getLastTrajectories)
 router.get('/trajectories'/*,middleware*/,getTrajectories)
+router.get('/trajectories/latest',getLastTrajectories)
 
-router.get('/lasttrajectorie',getLastTrajectory)
+router.get('/trajectories/filter',getFiltersTrajectories)
+
+//rutas adicionales
+router.get('/alltrajectories',getAllTrajectories)
+router.get('/lasttrajectory',getLastTrajectory)
 
 export default router

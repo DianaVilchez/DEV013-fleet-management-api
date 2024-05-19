@@ -1,26 +1,62 @@
 
 //nos permite hacer las peticiones
 
-# GET http://localhost:3000/taxis
+# GET http://localhost:3000/taxi
 
-GET http://localhost:3000/taxis?plate=CGEF-7101
+# GET http://localhost:3000/taxis?page=2
+
+# GET http://localhost:3000/taxis?page=0&limit=1
+
+# GET http://localhost:3000/taxi?taxi_id=7956
+
+
+# http://localhost:3000/alltrajectories
 
 # GET http://localhost:3000/trajectories
 
-# GET http://localhost:3000/trajectories?taxi_id=8935&date=2008-02-04
-
-# GET http://localhost:3000/trajectories?date=&page=1&limit=10
-
-# GET http://localhost:3000/trajectories?taxi_id=8935
+# GET http://localhost:3000/trajectories?page=1000&limit=10
 
 
-# GET http://localhost:3000/lasttrajectorie?taxi_id=10133
 
-# GET http://localhost:3000/trajectories/latest
+# GET http://localhost:3000/trajectories?date=2008-02-04&page=1&limit=10
 
 
-# 
+# GET http://localhost:3000/trajectories?taxi_id=7956
+
+
+# GET http://localhost:3000/trajectories/latest?page=-
+# GET http://localhost:3000/lasttrajectory?taxi_id=7956
+
+# GET http://localhost:3000/taxi?plate=CCKF-1601
+
+
+GET http://localhost:3000/trajectories/filter?date=2008-02-05&taxi_id=10133&page=1&limit=10
+
+
+//-------------------------ERRORES-----------------------------
+
+//ERROR con 2 paremetros
+# GET http://localhost:3000/trajectories?taxi_id=10133&date=2008-02-04&page=20
+
+//ERROR no hay datos que mostrar
+# GET http://localhost:3000/trajectories?date=2008-02-04&page=900
+# GET http://localhost:3000/trajectories?date=2028-02-04&page=1&limit=10
+
+//ERROR no hay parametros 
+# GET http://localhost:3000/trajectories?date=
+
+//ERROR date no es valido(Aun no codeado)
+# GET http://localhost:3000/trajectories?page=ffff
+
+//EROR no hay paremtros insertados
+# GET http://localhost:3000/trajectories
+
+
+
+
 # Content-Type: application/json
+
+
 # {
     
 # }
