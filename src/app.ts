@@ -7,6 +7,7 @@
 import 'dotenv/config'
 import express from 'express';
 import  { router }  from './routes';
+// import routesJsonToExcel from './utils/excel';
 
 // se importan las rutas:
 import routesTaxis from './routes/taxis';
@@ -27,6 +28,7 @@ app.use(router);
 //añadir rutas 
 app.use('/', routesTaxis);
 app.use('/',routesTrajectories);
+// app.use('/', routesJsonToExcel);
 
 
 // middlewares

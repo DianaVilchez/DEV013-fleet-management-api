@@ -1,9 +1,8 @@
 // import express from 'express'
 import { Router } from "express";
-import { getTrajectories} from "../controllers/trajectories";
-import { getLastTrajectories, getFiltersTrajectories } from "../controllers/trajectories";
+import { getTrajectories, getLastTrajectories, getFiltersTrajectories } from "../controllers/trajectories";
 //adicionales
-import { getLastTrajectory , getAllTrajectories} from "../controllers/trajectories"
+import { getLastTrajectory , getAllTrajectories,getTrajectoriesForItem} from "../controllers/trajectories"
 
 // cada router que se exporta es diferente aun asi tenga el mismo nombre
 const router = Router()
@@ -157,10 +156,12 @@ const router = Router()
 router.get('/trajectories'/*,middleware*/,getTrajectories)
 router.get('/trajectories/latest',getLastTrajectories)
 
-router.get('/trajectories/filter',getFiltersTrajectories)
+router.post('/trajectories/filter',getFiltersTrajectories)
 
 //rutas adicionales
 router.get('/alltrajectories',getAllTrajectories)
 router.get('/lasttrajectory',getLastTrajectory)
+router.get('/trajectories/item',getTrajectoriesForItem)
+
 
 export default router

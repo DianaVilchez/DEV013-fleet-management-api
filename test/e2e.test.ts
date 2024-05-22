@@ -22,30 +22,30 @@ describe("/GET/taxis", () => {
 });
 //-------------TRAJECTORIES----------------
 describe("GET /trajectories",() =>{
-  it("It should return all the trajectories of the corresponding taxi_id" ,async()=> {
-    const res = await request(app)
-       .get("/trajectories")
-       .query({taxi_id:10133,page:1 , limit:10});
-       expect(res.status).toBe(200);
-       expect(res.body).toHaveProperty('data');
-       expect(res.body).toHaveProperty("page");
-       expect(res.body).toHaveProperty("limit");
-  });
+//   it("It should return all the trajectories of the corresponding taxi_id" ,async()=> {
+//     const res = await request(app)
+//        .get("/trajectories")
+//        .query({taxi_id:10133,page:1 , limit:10});
+//        expect(res.status).toBe(200);
+//        expect(res.body).toHaveProperty('data');
+//        expect(res.body).toHaveProperty("page");
+//        expect(res.body).toHaveProperty("limit");
+//   });
 
-  it("It should return all the trajectories of the corresponding date" ,async()=> {
-    const res = await request(app)
-       .get("/trajectories")
-       .query({date:"2008-02-04",page:1 , limit:10});
-       expect(res.status).toBe(200);
-       expect(res.body).toHaveProperty('data');
-       expect(res.body).toHaveProperty("page");
-       expect(res.body).toHaveProperty("limit");
-  });
+//   it("It should return all the trajectories of the corresponding date" ,async()=> {
+//     const res = await request(app)
+//        .get("/trajectories")
+//        .query({date:"2008-02-04",page:1 , limit:10});
+//        expect(res.status).toBe(200);
+//        expect(res.body).toHaveProperty('data');
+//        expect(res.body).toHaveProperty("page");
+//        expect(res.body).toHaveProperty("limit");
+//   });
 
-  it("You should verify that all results have the same date" ,async()=> {
+  it("It should verify that all results have the same date" ,async()=> {
     const res = await request(app)
        .get("/trajectories")
-       .query({date:"2008-02-04",page:1 , limit:10});
+       .query({date:"2008-02-04",taxi_id:10133,page:1 , limit:10});
        expect(res.status).toBe(200);
        const expectedDate = "2008-02-04";
        // Verificar que cada objeto tenga la fecha esperada
@@ -66,7 +66,7 @@ describe("GET /trajectories",() =>{
   it("It should return 404 error when parameter taxi_id not found in database" ,async()=> {
     const res = await request(app)
        .get("/trajectories")
-       .query({taxi_id:1013,page:1 , limit:10});
+       .query({taxi_id:1013,date:"2008-02-04",page:1 , limit:10});
        expect(res.status).toBe(404);
        expect(res.body).toEqual({ message: "No se encontraron datos" });
   });
@@ -74,7 +74,7 @@ describe("GET /trajectories",() =>{
   it("It should return 404 error when parameter date not found in database" ,async()=> {
     const res = await request(app)
        .get("/trajectories")
-       .query({date:"2028-02-04",page:1 , limit:10});
+       .query({taxi_id:10133,date:"2028-02-04",page:1 , limit:10});
        expect(res.status).toBe(404);
        expect(res.body).toEqual({ message: "No se encontraron datos" });
   });

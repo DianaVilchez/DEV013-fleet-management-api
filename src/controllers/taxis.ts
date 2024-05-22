@@ -15,7 +15,7 @@ const prisma = new PrismaClient()
             // if (page <= 0 || limit <= 0) {
             //     return res.status(404).json({ message: "Página no encontrada" });
             // }
-    
+            
             const taxisData = await prisma.taxis.findMany({
                     skip: offset,
                     take:limit,
@@ -23,13 +23,15 @@ const prisma = new PrismaClient()
                         id: 'asc' // Asegúrate de que los resultados estén ordenados
                     },
                 })
-            
-                return res.status(200).json({
+                if (taxisData.length > 0) {
+                    return res.status(200).json({
                         data: taxisData, // los registros solicitados
                         page: page,
                         limit:limit
                     });
-                
+                  } else {
+                    return res.status(404).json({ message: "No se encontraron datos" });
+                  }       
         } catch (e){
             return res.status(500).json({message:"Error en el servidor"}) ;
                 //  return handleHttp(res,'Error en el servidor')
