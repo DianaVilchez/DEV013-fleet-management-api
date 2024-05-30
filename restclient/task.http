@@ -18,7 +18,7 @@
 
 
 
-# GET http://localhost:3000/trajectories?date=2008-02-04&taxi_id=10133&page=1&limit=10
+# GET http://localhost:3000/trajectories?date=2008-02-05&taxi_id=10133&page=1&limit=10
 
 
 # GET http://localhost:3000/trajectories?taxi_id=7956
@@ -58,7 +58,7 @@ POST http://localhost:3000/trajectories/filter
 Content-Type: application/json
 
 {
-  "taxi_id": "7956",
-  "date": "2008-02-05",
+  "taxi_id": "10133",
+  "date": "2008-02-04",
   "email":"educ.dana@gmail.com"
 }

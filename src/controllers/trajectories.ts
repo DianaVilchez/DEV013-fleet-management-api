@@ -2,6 +2,12 @@ import { Request, Response } from "express";
 import { PrismaClient, /*trajectories*/} from "@prisma/client";
 import { getStartAndEndOfDay } from '../utils/date';
 import  createExcelData  from '../utils/excel';
+// const nodemailer = require('nodemailer');
+// const path = require('path');
+import { transporter } from "../utils/gmail";
+import { pagination } from "../utils/pagination";
+import { trajectoriesData } from "../servicies/trajectories";
+import { lastTrajectoriesDates } from "../servicies/lastTrajectories";
 // import fs from 'fs'
 // import { handleHttp } from "../utils/error";
 
@@ -11,35 +17,17 @@ const prisma = new PrismaClient();
 const getTrajectories = async (req: Request, res: Response) => {
   try {
     const { taxi_id, date } = req.query;
-    const page = parseInt(req.query.page as string, 10) || 1; // Página actual
-    const limit = parseInt(req.query.limit as string, 10) || 10; // Tamaño de página
-    const offset = (page - 1) * limit;
-    console.log(taxi_id);
-    console.log(date);
-    //obtener las 24 horas del dia
-    //getFullYear():obtiene el año,getMonth():el mes,getDate():el dia
-    //endofday tiene que ser un dia mas , ya que marca el limite de la fecha
+    const {page, limit, startIndex} = pagination(req.body.page,req.body.limit)
     const { startOfDay, endOfDay } = getStartAndEndOfDay(date as string);
 
     if (!taxi_id || !date || date === "" || taxi_id==="") {
       return res.status(400).json({ message: "Dato no insertado" });
     }
-    const trajectoriesData = await prisma.trajectories.findMany({
-      where:{
-        date:{
-          gte: startOfDay,
-          lt: endOfDay,
-        },
-        taxi_id:Number(taxi_id),
-      },
-      skip: offset,
-      take: limit,
-      orderBy: { id: "asc" },
-    });
+    const trajectories =await trajectoriesData(Number(taxi_id) , startOfDay, endOfDay, startIndex, limit)
 
-    if (trajectoriesData.length > 0) {
+    if (trajectories.length > 0) {
       return res.status(200).json({
-        data: trajectoriesData,
+        data:trajectories,
         page: page,
         limit: limit,
       });
@@ -53,46 +41,12 @@ const getTrajectories = async (req: Request, res: Response) => {
 };
 const getLastTrajectories = async (req: Request, res: Response) => {
 
-  const page = parseInt(req.query.page as string, 10) || 1; // Página actual
-  const limit = parseInt(req.query.limit as string, 10) || 1; // Tamaño de página
-  //   const offset = (page - 1) * limit;
-  const startIndex = (page - 1) * limit; // Índice de inicio
-      try {
-      
-        const lastTrajectoriesDates = await prisma.trajectories.groupBy({
-          by: ["taxi_id"],
-          _max: {
-            date: true,
-          }
-          });
-        console.log("lastTrajectoriesDates",lastTrajectoriesDates);
+  const {page, limit, startIndex} = pagination(req.body.page,req.body.limit)
 
-        const trajectoriesDetails = await Promise.all(
-          lastTrajectoriesDates.map(async (item) => {
-            const lastTrajectory = await prisma.trajectories.findFirst({
-              where: {
-                taxi_id: item.taxi_id,
-                date: item._max.date,
-              },
-            });
-            console.log(lastTrajectory);
-            const taxiDetails = await prisma.taxis.findUnique({
-              where: {
-                id: item.taxi_id,
-              },
-            });
-            console.log(taxiDetails);
-            // Combinar los detalles de la trayectoria y del taxi en un objeto
-            return {
-              taxiId: item.taxi_id,
-              plate: taxiDetails?.plate,
-              date: lastTrajectory?.date,
-              latitude: lastTrajectory?.latitude,
-              longitude: lastTrajectory?.longitude,
-            };
-          })
-        );
-        const pageLastTrajectories = trajectoriesDetails.slice(startIndex, startIndex + limit);
+      try {
+        const lastTrajectories = await lastTrajectoriesDates()
+
+        const pageLastTrajectories = lastTrajectories.slice(startIndex, startIndex + limit);
         return res.status(200).json({
           pageLastTrajectories,
           page:page,
@@ -104,13 +58,7 @@ const getLastTrajectories = async (req: Request, res: Response) => {
 // filtra por taxi_id y date
 const getFiltersTrajectories = async (req: Request, res: Response) => {
       try {
-        const { taxi_id, date, /*email*/} = req.body;
-        // const page = parseInt(req.query.page as string, 10) || 1; // Página actual
-        // const limit = parseInt(req.query.limit as string, 10) || 10; // Tamaño de página
-        // const offset = (page - 1) * limit;
-        
-        // const emailUser= req.body.email;
-
+        const { taxi_id, date, email} = req.body;
         const { startOfDay, endOfDay } = getStartAndEndOfDay(date as string);
         
         if (!taxi_id || !date || date === "" || taxi_id==="") {
@@ -128,8 +76,7 @@ const getFiltersTrajectories = async (req: Request, res: Response) => {
         });
         if (trajectoriesData.length > 0) {
           console.log("1")
-          // console.log(taxi_id.now())
-          // console.log(date.now())
+          
           // transforma el res en excel y crea un archivo xlsx
           const fileName = `trajectories_${taxi_id}_${date}.xlsx`;
           console.log(fileName)
@@ -161,6 +108,44 @@ const getFiltersTrajectories = async (req: Request, res: Response) => {
         
       // });
 
+    await transporter.sendMail ({
+        from: 'educ.dana@gmail.com',        // correo desde el cual se enviará
+      to: email,    // destinatario
+      subject: 'Trajectorias',      // asunto del correo
+      text: `Lista de trajectorias del taxi ${taxi_id}`, // cuerpo del correo en texto
+      attachments: [
+        {
+          filename: fileName , // nombre del archivo que se enviará
+          path: filePath // ruta del archivo
+        }
+      ]
+    });
+    
+  //   const mailOptions = {
+  //       from: process.env.SMTP_USER,
+  //       to: `${req.body.email}`,
+  //       subject: "Thanks for contacting me",
+  //       text: "Hi! Thank you for contact me. I'll write you an email as soon as possible!"
+  //   }
+
+  //   transporter.sendMail(mailOptions, (error:any, info:any) => {
+  //     if (error) {
+  //       return console.log(error);
+  //     }
+  //     console.log('Correo enviado: ' + info.res);
+  //   });
+
+  //   transporter.sendMail(mailToMe, (err:any, info:any) => {
+
+  //     console.log('message: ', mailToMe)
+  //     if (err) {
+  //         console.error(err)
+  //     } else {
+  //         console.log(info)
+  //         res.status(200).json(req.body)
+  //     }
+  // })
+
       // Envía una respuesta 200 adicional indicando que el archivo ha sido enviado
        res.status(200).json({ message: "Archivo enviado correctamente" });
        return filePath
@@ -176,15 +161,14 @@ const getFiltersTrajectories = async (req: Request, res: Response) => {
 //voy a ver si dejarlo en la misma ruta o cambiarlo
 const getAllTrajectories = async (req: Request, res: Response) => {
   try {
-    const page = parseInt(req.query.page as string, 10) || 1; // Página actual
-    const limit = parseInt(req.query.limit as string, 10) || 10; // Tamaño de página
-    const offset = (page - 1) * limit;
+    const {page, limit, startIndex} = pagination(req.body.page,req.body.limit)
+
     
     let whereOptions ={};
    
     const trajectoriesData = await prisma.trajectories.findMany({
       where: whereOptions,
-      skip: offset,
+      skip: startIndex,
       take: limit,
       orderBy: { id: "asc" },
     });
@@ -243,9 +227,8 @@ const getLastTrajectory = async (req: Request, res: Response) => {
 const getTrajectoriesForItem = async (req: Request, res: Response) => {
   try {
     const { taxi_id, date } = req.query;
-    const page = parseInt(req.query.page as string, 10) || 1; // Página actual
-    const limit = parseInt(req.query.limit as string, 10) || 10; // Tamaño de página
-    const offset = (page - 1) * limit;
+    const {page, limit, startIndex} = pagination(req.body.page,req.body.limit)
+
     console.log(taxi_id);
     console.log(date);
     //obtener las 24 horas del dia
@@ -278,7 +261,7 @@ const getTrajectoriesForItem = async (req: Request, res: Response) => {
     }
     const trajectoriesData = await prisma.trajectories.findMany({
       where: whereOptions,
-      skip: offset,
+      skip: startIndex,
       take: limit,
       orderBy: { id: "asc" },
     });
