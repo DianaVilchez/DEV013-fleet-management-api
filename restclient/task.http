@@ -7,7 +7,7 @@
 
 # GET http://localhost:3000/taxis
 
-# GET http://localhost:3000/taxi?taxi_id=7956
+GET http://localhost:3000/taxi?taxi_id=801
 
 
 # http://localhost:3000/alltrajectories
@@ -54,11 +54,11 @@
 
 # http://localhost:3000/excel
 
-POST http://localhost:3000/trajectories/filter
-Content-Type: application/json
+# POST http://localhost:3000/trajectories/filter
+# Content-Type: application/json
 
-{
-  "taxi_id": "10133",
-  "date": "2008-02-04",
-  "email":"educ.dana@gmail.com"
-}
+# {
+#   "taxi_id": "10133",
+#   "date": "2008-02-04",
+#   "email":"educ.dana@gmail.com"
+# }

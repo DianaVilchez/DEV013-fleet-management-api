@@ -1,28 +1,22 @@
 // import express from 'express'
 import { Request, Response } from 'express';
 import {PrismaClient} from '@prisma/client'
+import { pagination } from "../utils/pagination";
 // import { handleHttp } from '../utils/error';
+import { allTaxisData } from '../servicies/alltaxis';
 
 const prisma = new PrismaClient()
 // module.exports = {
     const getAllTaxis = async(req:Request,res:Response) => {
         try{
-            //implementacion de paginacion offset
-            const page = parseInt(req.query.page as string) || 1;
-            const limit = parseInt(req.query.limit as string) || 10;
-            const offset = (page - 1) * limit;
+            
+            const {page, limit, startIndex} = pagination(req.body.page,req.body.limit)
 // por que este codigo no funciona???
             // if (page <= 0 || limit <= 0) {
             //     return res.status(404).json({ message: "Página no encontrada" });
             // }
-            
-            const taxisData = await prisma.taxis.findMany({
-                    skip: offset,
-                    take:limit,
-                    orderBy: {
-                        id: 'asc' // Asegúrate de que los resultados estén ordenados
-                    },
-                })
+            const taxisData = await allTaxisData (prisma,startIndex, limit)
+
                 if (taxisData.length > 0) {
                     return res.status(200).json({
                         data: taxisData, // los registros solicitados

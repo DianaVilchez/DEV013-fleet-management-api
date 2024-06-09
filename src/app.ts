@@ -10,8 +10,8 @@ import  { router }  from './routes';
 // import routesJsonToExcel from './utils/excel';
 
 // se importan las rutas:
-import routesTaxis from './routes/taxis';
-import routesTrajectories from './routes/trajectories'
+// import routesTaxis from './routes/taxis';
+// import routesTrajectories from './routes/trajectories'
 
 const { swaggerDocs } = require ('./swagger')
 const cors = require('cors');
@@ -26,8 +26,8 @@ app.use(router);
 // /*swagger*/app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 //añadir rutas 
-app.use('/', routesTaxis);
-app.use('/',routesTrajectories);
+// app.use('/', routesTaxis);
+// app.use('/',routesTrajectories);
 // app.use('/', routesJsonToExcel);
 
 

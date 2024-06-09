@@ -1,10 +1,14 @@
 // import express from 'express'
 import { Router } from 'express';
+import routesTaxis from '../routes/taxis';
+import routesTrajectories from '../routes/trajectories'
+
 // import { readdirSync } from 'fs';
 // dirname : devuelve la ruta actual
 // const PATH_ROUTER =`${__dirname}`;
 const router = Router()
-
+router.use('/', routesTaxis);
+router.use('/',routesTrajectories);
 
 // //para obtener el nombre de la carpeta sin el .ts
 // const cleanFileName = (fileName: string) => {
