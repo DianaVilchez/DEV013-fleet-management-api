@@ -7,7 +7,7 @@
 
 # GET http://localhost:3000/taxis
 
-GET http://localhost:3000/taxi?taxi_id=801
+# GET http://localhost:3000/taxi?taxi_id=801
 
 
 # http://localhost:3000/alltrajectories

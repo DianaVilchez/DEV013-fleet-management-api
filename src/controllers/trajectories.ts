@@ -44,11 +44,16 @@ const getLastTrajectories = async (req: Request, res: Response) => {
   const {page, limit, startIndex} = pagination(req.body.page,req.body.limit)
 
       try {
-        const lastTrajectories = await lastTrajectoriesDates()
+        // any:tipo de dato (se tiene que definir)
+        // otra posiblidad es crear un interfaz
+        const lastTrajectories: any = await lastTrajectoriesDates(startIndex, limit)
 
-        const pageLastTrajectories = lastTrajectories.slice(startIndex, startIndex + limit);
+        // const pageLastTrajectories = lastTrajectories.slice(startIndex, startIndex + limit);
+       
+
         return res.status(200).json({
-          pageLastTrajectories,
+          // pageLastTrajectories,
+          pageLastTrajectories:lastTrajectories,
           page:page,
           limit:limit});
       } catch (error) {
