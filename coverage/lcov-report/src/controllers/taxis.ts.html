@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/10</span>
+                <span class='fraction'>4/6</span>
             </div>
         
             
@@ -137,43 +137,16 @@
 <a name='L72'></a><a href='#L72'>72</a>
 <a name='L73'></a><a href='#L73'>73</a>
 <a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L75'></a><a href='#L75'>75</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -207,6 +180,31 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -216,42 +214,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// import express from 'express'
 import { Request, Response } from 'express';
 import {PrismaClient} from '@prisma/client'
+import { pagination } from "../utils/pagination";
 // import { handleHttp } from '../utils/error';
+import { allTaxisData } from '../servicies/alltaxis';
 &nbsp;
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
+const prisma = new PrismaClient({
+    log: ['query', 'info', 'warn', 'error'],
+  })
 // module.exports = {
-    const getAllTaxis = async(req:Request,res:Response) =&gt; {
-        try{
-            //implementacion de paginacion offset
-            const page = parseInt(req.query.page as string) || 1;
-            const limit = parseInt(req.query.limit as string) || 10;
-            const offset = (page - 1) * limit;
-// por que este codigo no funciona???
-            // if (page &lt;= 0 || limit &lt;= 0) {
-            //     return res.status(404).json({ message: "Página no encontrada" });
-            // }
-            
-            const taxisData = await prisma.taxis.findMany({
-                    skip: offset,
-                    take:limit,
-                    orderBy: {
-                        id: 'asc' // Asegúrate de que los resultados estén ordenados
-                    },
-                })
-                if (taxisData.length &gt; 0) {
-                    return res.status(200).json({
-                        data: taxisData, // los registros solicitados
-                        page: page,
-                        limit:limit
-                    });
-                  } else <span class="missing-if-branch" title="else path not taken" >E</span>{
-<span class="cstat-no" title="statement not covered" >                    return res.status(404).json({ message: "No se encontraron datos" });</span>
-                  }       
-        } catch (e){
-<span class="cstat-no" title="statement not covered" >            return res.status(500).json({message:"Error en el servidor"}) ;</span>
-                //  return handleHttp(res,'Error en el servidor')
-        }
-    }
+    
 const getDataTaxis = async(req:Request,res:Response) =&gt; {
     try{
         
@@ -285,6 +257,31 @@ const getDataTaxis = async(req:Request,res:Response) =&gt; {
             //  return handleHttp(res,'Error en el servidor')
     }
 }
+const getAllTaxis = async(req:Request,res:Response) =&gt; {
+    try{
+        
+        const {page, limit, startIndex} = pagination(req.body.page,req.body.limit)
+// por que este codigo no funciona???
+        // if (page &lt;= 0 || limit &lt;= 0) {
+        //     return res.status(404).json({ message: "Página no encontrada" });
+        // }
+        const taxisData = await allTaxisData (prisma,startIndex, limit)
+&nbsp;
+            if (taxisData.length &gt; 0) {
+                return res.status(200).json({
+                    data: taxisData, // los registros solicitados
+                    page: page,
+                    limit:limit
+                });
+              } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+<span class="cstat-no" title="statement not covered" >                return res.status(404).json({ message: "No se encontraron datos" });</span>
+              }       
+    } catch (e){
+<span class="cstat-no" title="statement not covered" >        return res.status(500).json({message:"Error en el servidor"}) ;</span>
+            //  return handleHttp(res,'Error en el servidor')
+    }
+    
+}
 // }
 export {getDataTaxis,getAllTaxis}
 &nbsp;
@@ -295,7 +292,7 @@ export {getDataTaxis,getAllTaxis}
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-22T15:02:16.519Z
+                at 2024-07-04T16:34:31.913Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

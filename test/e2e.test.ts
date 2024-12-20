@@ -66,7 +66,7 @@ describe("GET /trajectories",() =>{
   it("It should return 404 error when parameter taxi_id not found in database" ,async()=> {
     const res = await request(app)
        .get("/trajectories")
-       .query({taxi_id:1013,date:"2008-02-04",page:1 , limit:10});
+       .query({taxi_id:1013000,date:"2008-02-04",page:1 , limit:10});
        expect(res.status).toBe(404);
        expect(res.body).toEqual({ message: "No se encontraron datos" });
   });
