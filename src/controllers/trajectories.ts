@@ -13,20 +13,36 @@ const getTrajectoriesByIdAndDate = async (req: Request, res: Response) => {
   try {
     const { taxi_id, date } = req.query;
     const { page, limit, startIndex } = pagination(
-      req.body.page,
-      req.body.limit
+      req.query.page as string,
+      req.query.limit as string
     );
-    const { startOfDay, endOfDay } = getStartAndEndOfDay(date as string);
+    console.log("page",req.query)
+    console.log("Page parameter:", req.query["page"])
+    let startOfDay: Date | null = null;
+    let endOfDay: Date | null = null;
 
-    if (!taxi_id || !date || date === "" || taxi_id === "") {
-      return res.status(400).json({ message: "Dato no insertado" });
+    if (date && date !== "") {
+      const { startOfDay: start, endOfDay: end } = getStartAndEndOfDay(date as string);
+      startOfDay = start;
+      endOfDay = end;
+    }
+    const filters: any = {};
+    if (taxi_id && taxi_id !== "") {
+      filters.taxi_id = Number(taxi_id); // Convertir taxi_id a número
+    }
+    if (startOfDay && endOfDay) {
+      filters.startOfDay = startOfDay;
+      filters.endOfDay = endOfDay;
+    }
+    if (Object.keys(filters).length === 0) {
+      return res.status(400).json({ message: "Debe proporcionar al menos un parámetro (taxi_id o date)" });
     }
     const trajectories = await trajectoriesData(
-      Number(taxi_id),
-      startOfDay,
-      endOfDay,
       startIndex,
-      limit
+      limit,
+      filters.taxi_id, 
+      filters.startOfDay, 
+      filters.endOfDay,  
     );
 
     if (trajectories.length > 0) {
@@ -123,131 +139,64 @@ console.log("End of Day:", endOfDay);
     return res.status(500).json({ message: "Error en el servidor" });
   }
 };
-//voy a ver si dejarlo en la misma ruta o cambiarlo
-// const getAllTrajectories = async (req: Request, res: Response) => {
-//   try {
-//     const { page, limit, startIndex } = pagination(
-//       req.body.page,
-//       req.body.limit
-//     );
+const getAllTrajectories = async (req: Request, res: Response) => {
+  try {
+    const { page, limit, startIndex } = pagination(
+      req.query.page as string,
+      req.query.limit as string
+    );
 
-//     let whereOptions = {};
+    let whereOptions = {};
 
-//     const trajectoriesData = await prisma.trajectories.findMany({
-//       where: whereOptions,
-//       skip: startIndex,
-//       take: limit,
-//       orderBy: { id: "asc" },
-//     });
-//     if (trajectoriesData.length > 0) {
-//       return res.status(200).json({
-//         data: trajectoriesData,
-//         page: page,
-//         limit: limit,
-//       });
-//     } else {
-//       return res.status(404).json({ message: "No se encontraron datos" });
-//     }
-//   } catch (error) {
-//     return res.status(500).json({ message: "Error en el servidor" });
-//     // return handleHttp(res, "Error en el servidor");
-//   }
-// };
+    const trajectoriesData = await prisma.trajectories.findMany({
+      where: whereOptions,
+      skip: startIndex,
+      take: limit,
+      orderBy: { id: "asc" },
+    });
+    if (trajectoriesData.length > 0) {
+      return res.status(200).json({
+        data: trajectoriesData,
+        page: page,
+        limit: limit,
+      });
+    } else {
+      return res.status(404).json({ message: "No se encontraron datos" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Error en el servidor" });
+  }
+};
 
-// const getLastTrajectory = async (req: Request, res: Response) => {
-//   console.log("hola");
-//   const { taxi_id } = req.query;
-//   if (!taxi_id) {
-//     return res.status(400).json({ message: "Faltan datos" });
-//   }
-//   const taxi = await prisma.taxis.findUnique({
-//     where: {
-//       id: parseInt(taxi_id as string),
-//     },
-//   });
+const getLastTrajectory = async (req: Request, res: Response) => {
+  console.log("hola");
+  const { taxi_id } = req.query;
+  if (!taxi_id) {
+    return res.status(400).json({ message: "Faltan datos" });
+  }
+  const taxi = await prisma.taxis.findUnique({
+    where: {
+      id: parseInt(taxi_id as string),
+    },
+  });
 
-//   const lastTrajectorie = await prisma.trajectories.findFirst({
-//     where: {
-//       taxi_id: Number(taxi_id),
-//     },
-//     orderBy: {
-//       id: "desc",
-//     },
-//   });
+  const lastTrajectorie = await prisma.trajectories.findFirst({
+    where: {
+      taxi_id: Number(taxi_id),
+    },
+    orderBy: {
+      id: "desc",
+    },
+  });
 
-//   if (!taxi) {
-//     return res.status(404).json({ message: "Taxi no encontrado" });
-//   }
-//   console.log("taxi", taxi.plate);
-//   const dataLastTrajectorie = {
-//     plate: taxi.plate,
-//     ...lastTrajectorie,
-//   };
-//   return res.status(200).json({ dataLastTrajectorie });
-// };
+  if (!taxi) {
+    return res.status(404).json({ message: "Taxi no encontrado" });
+  }
+  const dataLastTrajectorie = {
+    plate: taxi.plate,
+    ...lastTrajectorie,
+  };
+  return res.status(200).json({ dataLastTrajectorie });
+};
 
-// const getTrajectoriesForItem = async (req: Request, res: Response) => {
-//   try {
-//     const { taxi_id, date } = req.query;
-//     const { page, limit, startIndex } = pagination(
-//       req.body.page,
-//       req.body.limit
-//     );
-
-//     console.log("taxi_id", taxi_id);
-//     console.log("date", date);
-//     //obtener las 24 horas del dia
-//     //getFullYear():obtiene el año,getMonth():el mes,getDate():el dia
-//     //endofday tiene que ser un dia mas , ya que marca el limite de la fecha
-//     const { startOfDay, endOfDay } = getStartAndEndOfDay(date as string);
-
-//     let whereOptions = {};
-//     if (taxi_id && date) {
-//       return res
-//         .status(400)
-//         .json({
-//           message: "Solo se permite un parámetro: taxi_id o date, no ambos",
-//         });
-//     }
-//     if (!taxi_id || !date) {
-//       return res.status(400).json({ message: "Dato no insertado" });
-//     }
-//     if (date === "" || taxi_id === "") {
-//       return res.status(400).json({ message: "Dato no insertado" });
-//     }
-//     if (date) {
-//       console.log("hola");
-//       console.log("startOfDay", startOfDay);
-//       whereOptions = {
-//         ...whereOptions,
-//         date: {
-//           gte: startOfDay,
-//           lt: endOfDay,
-//         }, // Asegurarse de que la fecha sea válida
-//       };
-//     }
-//     if (taxi_id) {
-//       whereOptions = { ...whereOptions, taxi_id: Number(taxi_id) };
-//     }
-//     const trajectoriesData = await prisma.trajectories.findMany({
-//       where: whereOptions,
-//       skip: startIndex,
-//       take: limit,
-//       orderBy: { id: "asc" },
-//     });
-//     if (trajectoriesData.length > 0) {
-//       return res.status(200).json({
-//         data: trajectoriesData,
-//         page: page,
-//         limit: limit,
-//       });
-//     } else {
-//       return res.status(404).json({ message: "No se encontraron datos" });
-//     }
-//   } catch (error) {
-//     return res.status(500).json({ message: "Error en el servidor" });
-//     // return handleHttp(res, "Error en el servidor");
-//   }
-// };
-export { getTrajectoriesByIdAndDate, getLastTrajectories, sendTrajectoriesReport };
-// export { getAllTrajectories, getLastTrajectory, getTrajectoriesForItem };
+export { getTrajectoriesByIdAndDate, getLastTrajectories, sendTrajectoriesReport, getAllTrajectories, getLastTrajectory};

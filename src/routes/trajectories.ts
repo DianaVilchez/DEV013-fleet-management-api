@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { getTrajectoriesByIdAndDate,getLastTrajectories, sendTrajectoriesReport} from "../controllers/trajectories";
-// import { getLastTrajectory , getAllTrajectories,getTrajectoriesForItem} from "../controllers/trajectories"
+import { getTrajectoriesByIdAndDate,getLastTrajectories, sendTrajectoriesReport,getLastTrajectory , getAllTrajectories} from "../controllers/trajectories";
 
 const router = Router()
 /**
@@ -153,11 +152,9 @@ const router = Router()
 router.get('/trajectories',getTrajectoriesByIdAndDate)
 router.get('/trajectories/latest',getLastTrajectories)
 router.post('/trajectories/report',sendTrajectoriesReport)
-
 // //rutas adicionales
-// router.get('/alltrajectories',getAllTrajectories)
-// router.get('/lasttrajectory',getLastTrajectory)
-// router.get('/trajectories/item',getTrajectoriesForItem)
+router.get('/trajectories/all',getAllTrajectories)
+router.get('/lasttrajectory',getLastTrajectory)
 
 
 export default router
