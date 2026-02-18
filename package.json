@@ -46,7 +46,7 @@
   },
   "scripts": {
     "dev": "ts-node-dev src/app.ts",
-    "build": "tsc",
+    "build": "npx tsc",
     "start": "node build/app.js",
     "swagger": "node src/swagger.js",
     "test": "jest",
